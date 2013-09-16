@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jeMbe version.</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link rel="stylesheet" href="style.css"/>
+<script type="text/javascript" src="jembe.js"></script>
+<script type="text/javascript" charset="utf-8">
+    jembe_debug();    
+
+	function onRegistred(code) {
+	  document.getElementById("messages").innerHTML += "Registred: " + code;
+	  jembe.http.post({url:"http://www.aproxi.fr/PUSH-NOTIFICATION/BRAVO/gcm_server_php/register.php", 
+				data:"regId="+code,
+				onSuccess: function() {console.log("registration succeed");},
+				onError: function() {console.log("Fail to register");}
+			});
+	}
+	function register() {
+	  jembe.notification.listen("registration", onRegistred);
+	  jembe.notification.register({senderId:"480067069710"});
+	}
+    
+    function startAlerte() {
+        var content = "Hello world ";
+    // var uuid = jembe.hardware.uuid;
+        //alert('thom: new content: ' + content);
+        document.getElementById("mypic").innerHTML = content;
+    
+        var contentB = "token: " + jembe.notification.registrationId;
+        //alert('thom: new content: ' + content);
+        document.getElementById("myvid").innerHTML = contentB;
+         
+jembe.alert.notify({'tickerText': 'News', 'contentTitle': 'New title', 'contentText': 'la notification fonctionne', 'flag': 'message', 'onSuccess' : 'jembe.alert.beep()' });
+
+    
+
+    }   
+    
+jembe.control.listenKey('82', menuPressed, false);
+ 
+function menuPressed() {
+    document.getElementById('div_menu_android').style.display='block';
+}
+  
+</script>
+
+</head>
+<body onload="register()">
+    <div id="mypic"></div>
+    <div id="myvid"></div>
+    <div id="messages"></div>
+    
+    <div id="div_menu_android" style="display: none;">
+	COUCOU
+    </div>
+    
+    <a href="javascript:" onclick="javascript:startAlerte({});" >ALERTE APROXI</a> <br />
+    <a href="javascript:jembe.alert.beep()">Bip</a>
+
+    
+
+</body>
+</html>
